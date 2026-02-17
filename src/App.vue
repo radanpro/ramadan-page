@@ -1,30 +1,85 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="container">
+    <GreetingCard />
+    <div class="divider"></div>
+    <h2>مراحل القمر 🌒</h2>
+    <DateInput @update="updateMoon" />
+    <MoonDisplay :phase="phase" ref="moonDisplay" />
+    <MoonInfo v-if="showInfo" :phaseData="phaseData" />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<script lang="ts">
+import GreetingCard from "@/components/GreetingCard.vue";
+import DateInput from "@/components/DateInput.vue";
+import MoonDisplay from "@/components/MoonDisplay.vue";
+import MoonInfo from "@/components/MoonInfo.vue";
+
+export default {
+  components: { GreetingCard, DateInput, MoonDisplay, MoonInfo },
+  data() {
+    return {
+      phase: 0,
+      phaseData: null,
+      showInfo: false,
+    };
+  },
+  methods: {
+    updateMoon(date) {
+      const phase = this.calculateMoonPhase(date);
+      this.phase = phase;
+      this.phaseData = this.getPhaseData(phase);
+      this.showInfo = true;
+      this.$refs.moonDisplay.animateMoon();
+    },
+    calculateMoonPhase(date) {
+      const year = date.getFullYear();
+      let month = date.getMonth() + 1;
+      let day = date.getDate();
+      let lYear = year;
+      if (month < 3) {
+        lYear--;
+        month += 12;
+      }
+      const A = Math.floor(lYear / 100);
+      const B = Math.floor(A / 4);
+      const C = 2 - A + B;
+      const E = Math.floor(365.25 * (lYear + 4716));
+      const F = Math.floor(30.6001 * (month + 1));
+      const jd = C + day + E + F - 1524.5;
+      const daysSinceNew = jd - 2451549.5;
+      const newMoons = daysSinceNew / 29.53058867;
+      return newMoons - Math.floor(newMoons);
+    },
+    getPhaseData(phase) {
+      const phaseName =
+        phase < 0.03 || phase > 0.97
+          ? "محاق (New Moon)"
+          : phase < 0.22
+            ? "هلال متزايد (Waxing Crescent)"
+            : phase < 0.28
+              ? "تربيع أول (First Quarter)"
+              : phase < 0.47
+                ? "أحدب متزايد (Waxing Gibbous)"
+                : phase < 0.53
+                  ? "بدر (Full Moon)"
+                  : phase < 0.72
+                    ? "أحدب متناقص (Waning Gibbous)"
+                    : phase < 0.78
+                      ? "تربيع أخير (Last Quarter)"
+                      : "هلال متناقص (Waning Crescent)";
+      const illumination = (
+        (Math.abs(Math.cos(phase * 2 * Math.PI) - 1) / 2) *
+        100
+      ).toFixed(1);
+      const age = (phase * 29.53).toFixed(1);
+      return { phaseName, illumination, age };
+    },
+  },
+  mounted() {
+    this.updateMoon(new Date());
+  },
+};
+</script>
+
+<style></style>
