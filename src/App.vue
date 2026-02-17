@@ -45,18 +45,24 @@ import MoonDisplay from "@/components/MoonDisplay.vue";
 import MoonInfo from "@/components/MoonInfo.vue";
 import RamadanDaily from "@/components/RamadanDaily.vue";
 
+interface MoonPhaseData {
+  phaseName: string;
+  illumination: string;
+  age: string;
+}
+
 export default {
   components: { GreetingCard, DateInput, MoonDisplay, MoonInfo, RamadanDaily },
   data() {
     return {
       phase: 0,
-      phaseData: null,
+      phaseData: null as MoonPhaseData | null,
       showInfo: false,
       currentDate: new Date(),
     };
   },
   methods: {
-    updateMoon(date: any) {
+    updateMoon(date: Date) {
       this.currentDate = date;
       const phase = this.calculateMoonPhase(date);
       this.phase = phase;
@@ -79,7 +85,7 @@ export default {
         "--max-opacity": maxOpacity,
       };
     },
-    calculateMoonPhase(date: any) {
+    calculateMoonPhase(date: Date) {
       const year = date.getFullYear();
       let month = date.getMonth() + 1;
       let day = date.getDate();
@@ -98,7 +104,7 @@ export default {
       const newMoons = daysSinceNew / 29.53058867;
       return newMoons - Math.floor(newMoons);
     },
-    getPhaseData(phase) {
+    getPhaseData(phase: number): MoonPhaseData {
       const phaseName =
         phase < 0.03 || phase > 0.97
           ? "محاق (New Moon)"

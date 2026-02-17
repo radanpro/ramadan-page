@@ -18,16 +18,16 @@ export default defineComponent({
   name: "MoonInfo",
   props: {
     phaseData: {
-      type: Object,
+      type: Object as () => Record<string, any> | null,
       required: true,
     },
   },
   computed: {
     displayItems() {
       return [
-        { label: "اسم المرحلة", value: this.phaseData.phaseName },
-        { label: "نسبة الإضاءة", value: `${this.phaseData.illumination}%` },
-        { label: "عمر القمر", value: `${this.phaseData.age} يوم` },
+        { label: "اسم المرحلة", value: this.phaseData?.phaseName },
+        { label: "نسبة الإضاءة", value: `${this.phaseData?.illumination}%` },
+        { label: "عمر القمر", value: `${this.phaseData?.age} يوم` },
       ];
     },
   },
