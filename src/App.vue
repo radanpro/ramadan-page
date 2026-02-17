@@ -1,19 +1,37 @@
 <template>
   <div class="app-wrapper">
-    <div class="container main-layout">
-      <!-- Greeting Section -->
-      <section class="section-greeting">
-        <GreetingCard />
-      </section>
+    <!-- Star Background -->
+    <div class="stars-container">
+      <div
+        v-for="n in 50"
+        :key="n"
+        class="star"
+        :style="generateStarStyle()"
+      ></div>
+    </div>
 
-      <div class="divider desktop-hidden"></div>
+    <div class="container">
+      <div class="main-layout">
+        <!-- Greeting Section -->
+        <section class="section-greeting">
+          <GreetingCard />
+        </section>
 
-      <!-- Moon Tools Section -->
-      <section class="section-moon">
-        <h2>مراحل القمر 🌒</h2>
-        <DateInput @update="updateMoon" />
-        <MoonDisplay :phase="phase" ref="moonDisplay" />
-        <MoonInfo v-if="showInfo" :phaseData="phaseData" />
+        <div class="divider desktop-hidden"></div>
+
+        <!-- Moon Tools Section -->
+        <section class="section-moon">
+          <h2>مراحل القمر 🌒</h2>
+          <DateInput @update="updateMoon" />
+          <MoonDisplay :phase="phase" ref="moonDisplay" />
+          <MoonInfo v-if="showInfo" :phaseData="phaseData" />
+        </section>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Daily Message Section (Full Width) -->
+      <section class="section-daily-full">
         <RamadanDaily :targetDate="currentDate" />
       </section>
     </div>
@@ -38,7 +56,7 @@ export default {
     };
   },
   methods: {
-    updateMoon(date) {
+    updateMoon(date: any) {
       this.currentDate = date;
       const phase = this.calculateMoonPhase(date);
       this.phase = phase;
@@ -46,7 +64,22 @@ export default {
       this.showInfo = true;
       (this.$refs.moonDisplay as any).animateMoon();
     },
-    calculateMoonPhase(date) {
+    generateStarStyle() {
+      const top = Math.random() * 100 + "%";
+      const left = Math.random() * 100 + "%";
+      const size = Math.random() * 2 + 1 + "px";
+      const duration = Math.random() * 3 + 2 + "s";
+      const maxOpacity = Math.random() * 0.5 + 0.3;
+      return {
+        top,
+        left,
+        width: size,
+        height: size,
+        "--duration": duration,
+        "--max-opacity": maxOpacity,
+      };
+    },
+    calculateMoonPhase(date: any) {
       const year = date.getFullYear();
       let month = date.getMonth() + 1;
       let day = date.getDate();
