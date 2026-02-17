@@ -14,6 +14,7 @@
         <DateInput @update="updateMoon" />
         <MoonDisplay :phase="phase" ref="moonDisplay" />
         <MoonInfo v-if="showInfo" :phaseData="phaseData" />
+        <RamadanDaily :targetDate="currentDate" />
       </section>
     </div>
   </div>
@@ -24,23 +25,26 @@ import GreetingCard from "@/components/GreetingCard.vue";
 import DateInput from "@/components/DateInput.vue";
 import MoonDisplay from "@/components/MoonDisplay.vue";
 import MoonInfo from "@/components/MoonInfo.vue";
+import RamadanDaily from "@/components/RamadanDaily.vue";
 
 export default {
-  components: { GreetingCard, DateInput, MoonDisplay, MoonInfo },
+  components: { GreetingCard, DateInput, MoonDisplay, MoonInfo, RamadanDaily },
   data() {
     return {
       phase: 0,
       phaseData: null,
       showInfo: false,
+      currentDate: new Date(),
     };
   },
   methods: {
     updateMoon(date) {
+      this.currentDate = date;
       const phase = this.calculateMoonPhase(date);
       this.phase = phase;
       this.phaseData = this.getPhaseData(phase);
       this.showInfo = true;
-      this.$refs.moonDisplay.animateMoon();
+      (this.$refs.moonDisplay as any).animateMoon();
     },
     calculateMoonPhase(date) {
       const year = date.getFullYear();
