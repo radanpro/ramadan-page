@@ -1,11 +1,21 @@
 <template>
-  <div class="container">
-    <GreetingCard />
-    <div class="divider"></div>
-    <h2>مراحل القمر 🌒</h2>
-    <DateInput @update="updateMoon" />
-    <MoonDisplay :phase="phase" ref="moonDisplay" />
-    <MoonInfo v-if="showInfo" :phaseData="phaseData" />
+  <div class="app-wrapper">
+    <div class="container main-layout">
+      <!-- Greeting Section -->
+      <section class="section-greeting">
+        <GreetingCard />
+      </section>
+
+      <div class="divider desktop-hidden"></div>
+
+      <!-- Moon Tools Section -->
+      <section class="section-moon">
+        <h2>مراحل القمر 🌒</h2>
+        <DateInput @update="updateMoon" />
+        <MoonDisplay :phase="phase" ref="moonDisplay" />
+        <MoonInfo v-if="showInfo" :phaseData="phaseData" />
+      </section>
+    </div>
   </div>
 </template>
 

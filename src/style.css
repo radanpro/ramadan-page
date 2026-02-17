@@ -1,3 +1,12 @@
+.app-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
 :root {
   --bg-color: #05070a;
   --card-bg: rgba(255, 255, 255, 0.05);
@@ -20,11 +29,7 @@ body {
     #05070a 100%
   );
   color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin: 0;
-  padding: 20px;
   overflow-x: hidden;
 }
 
@@ -49,7 +54,6 @@ body::before {
 .container {
   width: 100%;
   max-width: 500px;
-  text-align: center;
   background: var(--card-bg);
   padding: 40px;
   border-radius: 32px;
@@ -57,6 +61,58 @@ body::before {
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   animation: fadeIn 0.8s ease-out;
+  margin: 0 auto;
+}
+
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.desktop-hidden {
+  display: block;
+}
+
+/* Desktop Responsiveness */
+@media (min-width: 992px) {
+  .container {
+    max-width: 1000px;
+    padding: 60px;
+  }
+
+  .main-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 60px;
+    align-items: center;
+    text-align: right;
+  }
+
+  .section-moon {
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding-right: 60px;
+  }
+
+  /* Reverse order for RTL logic if needed, or just standard */
+  .section-greeting {
+    order: 2;
+  }
+  .section-moon {
+    order: 1;
+  }
+
+  .desktop-hidden {
+    display: none;
+  }
+
+  .greeting-card {
+    margin-bottom: 0;
+  }
+
+  .greeting-img {
+    max-height: 400px;
+  }
 }
 
 @keyframes fadeIn {
