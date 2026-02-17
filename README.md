@@ -1,5 +1,77 @@
-# Vue 3 + TypeScript + Vite
+# 🌙 صفحة رمضان (Ramadan Page)
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+تطبيق ويب عصري مبني باستخدام **Vue 3** و **TypeScript** و **Vite**، يهدف إلى تقديم تجربة رقمية مميزة خلال شهر رمضان المبارك 2026.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+A modern web application built with **Vue 3**, **TypeScript**, and **Vite**, designed to provide a premium digital experience for the holy month of Ramadan 2026.
+
+---
+
+## 🚀 المميزات (Features)
+
+- **🌒 مراحل القمر (Moon Phases):** حساب دقيق لمراحل القمر بناءً على التاريخ المختار بدون الحاجة لخدمات خارجية (No API).
+- **📖 محتوى رمضاني يومي (Daily Ramadan Content):** عرض تلقائي لرسائل يومية تشمل (حديث، دعاء، تذكير، حكمة) لكل يوم من أيام الشهر الفضيل.
+- **📅 تقويم تفاعلي (Interactive Calendar):** اختيار أي تاريخ لاستكشاف مراحل القمر والرسائل المرتبطة به.
+- **📱 تصميم متجاوب (Responsive Design):** تجربة مستخدم مثالية على جميع الأجهزة (موبايل، تابلت، كمبيوتر) مع واجهة "Glassmorphism" جذابة.
+- **⚡ أداء سريع:** يعتمد على Vite لضمان سرعة التحميل والاستجابة.
+
+---
+
+## 🛠️ التقنيات المستخدمة (Tech Stack)
+
+- **Frontend:** Vue.js 3 (Composition API)
+- **Language:** TypeScript
+- **Build Tool:** Vite
+- **Styling:** Vanilla CSS (Modern CSS properties)
+
+---
+
+## 📦 البدء (Getting Started)
+
+### المتطلبات (Prerequisites)
+
+- Node.js (الإصدار الأخير مستحسن)
+- Yarn أو NPM
+
+### التثبيت والتشغيل (Installation & Setup)
+
+1.  **تحميل المشروع:**
+
+    ```bash
+    git clone [repo-url]
+    cd ramadan-page
+    ```
+
+2.  **تثبيت الحزم:**
+
+    ```bash
+    yarn install
+    # أو
+    npm install
+    ```
+
+3.  **تشغيل وضع التطوير:**
+
+    ```bash
+    yarn dev
+    # أو
+    npm run dev
+    ```
+
+4.  **بناء المشروع للإنتاج:**
+    ```bash
+    yarn build
+    # أو
+    npm run build
+    ```
+
+---
+
+## 👨‍💻 تطوير (Developer)
+
+**م. عبدالرحمن رعدان**
+
+---
+
+## 📄 الترخيص (License)
+
+هذا المشروع مفتوح المصدر للاستخدام التعليمي والشخصي.
