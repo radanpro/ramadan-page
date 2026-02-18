@@ -11,6 +11,8 @@
     </div>
 
     <div class="container">
+      <BackgroundVideo />
+      <div class="divider"></div>
       <div class="main-layout">
         <!-- Greeting Section -->
         <section class="section-greeting">
@@ -44,6 +46,7 @@ import DateInput from "@/components/DateInput.vue";
 import MoonDisplay from "@/components/MoonDisplay.vue";
 import MoonInfo from "@/components/MoonInfo.vue";
 import RamadanDaily from "@/components/RamadanDaily.vue";
+import BackgroundVideo from "@/components/BackgroundVideo.vue";
 
 interface MoonPhaseData {
   phaseName: string;
@@ -52,7 +55,14 @@ interface MoonPhaseData {
 }
 
 export default {
-  components: { GreetingCard, DateInput, MoonDisplay, MoonInfo, RamadanDaily },
+  components: {
+    GreetingCard,
+    DateInput,
+    MoonDisplay,
+    MoonInfo,
+    RamadanDaily,
+    BackgroundVideo,
+  },
   data() {
     return {
       phase: 0,
