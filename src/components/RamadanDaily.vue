@@ -1,7 +1,8 @@
 <template>
   <div v-if="ramadanDay" class="ramadan-daily-container">
     <div class="day-badge">
-      <span class="day-number">{{ ramadanDay }}</span>
+      <span class="day-label">ليلة</span>
+      <span class="day-number">{{ ramadanDay + 1 }}</span>
       <span class="day-label">رمضان</span>
     </div>
 
