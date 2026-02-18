@@ -50,9 +50,9 @@ export default defineComponent({
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="moon-svg">
           <defs>
             <radialGradient id="moonSurface" cx="40%" cy="40%" r="60%">
-              <stop offset="0%" style="stop-color:#fffef0;stop-opacity:1"/>
-              <stop offset="60%" style="stop-color:#facc15;stop-opacity:1"/>
-              <stop offset="100%" style="stop-color:#ca8a04;stop-opacity:1"/>
+              <stop offset="0%" style="stop-color:#E4E3D6;stop-opacity:1"/>
+              <stop offset="60%" style="stop-color:#E4E3D6;stop-opacity:1"/>
+              <stop offset="100%" style="stop-color:#fff;stop-opacity:1"/>
             </radialGradient>
             <filter id="moonGlow" x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur stdDeviation="3" result="blur"/>
