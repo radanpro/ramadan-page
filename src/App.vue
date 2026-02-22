@@ -1,9 +1,9 @@
 <template>
   <div class="app-wrapper">
-    <!-- Star Background -->
+    <!-- Animated Star Background -->
     <div class="stars-container">
       <div
-        v-for="n in 50"
+        v-for="n in 60"
         :key="n"
         class="star"
         :style="generateStarStyle()"
@@ -11,17 +11,21 @@
     </div>
 
     <div class="container">
+      <!-- Video Section -->
       <BackgroundVideo />
+
       <div class="divider"></div>
+
+      <!-- Two-column grid section -->
       <div class="main-layout">
-        <!-- Greeting Section -->
+        <!-- Greeting Card -->
         <section class="section-greeting">
           <GreetingCard />
         </section>
 
         <div class="divider desktop-hidden"></div>
 
-        <!-- Moon Tools Section -->
+        <!-- Moon Tools -->
         <section class="section-moon">
           <h2>مراحل القمر 🌒</h2>
           <DateInput @update="updateMoon" />
@@ -32,7 +36,7 @@
 
       <div class="divider"></div>
 
-      <!-- Daily Message Section (Full Width) -->
+      <!-- Daily Ramadan Message (Full Width) -->
       <section class="section-daily-full">
         <RamadanDaily :targetDate="currentDate" />
       </section>
@@ -83,9 +87,10 @@ export default {
     generateStarStyle() {
       const top = Math.random() * 100 + "%";
       const left = Math.random() * 100 + "%";
-      const size = Math.random() * 2 + 1 + "px";
-      const duration = Math.random() * 3 + 2 + "s";
-      const maxOpacity = Math.random() * 0.5 + 0.3;
+      const size = Math.random() * 2.2 + 0.8 + "px";
+      const duration = Math.random() * 4 + 2 + "s";
+      const maxOpacity = Math.random() * 0.55 + 0.2;
+      const delay = Math.random() * 5 + "s";
       return {
         top,
         left,
@@ -93,6 +98,7 @@ export default {
         height: size,
         "--duration": duration,
         "--max-opacity": maxOpacity,
+        "animation-delay": delay,
       };
     },
     calculateMoonPhase(date: Date) {

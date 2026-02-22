@@ -1,38 +1,41 @@
 <template>
   <div v-if="ramadanDay" class="ramadan-daily-container">
-    <div class="day-badge">
-      <span class="day-label">ليلة</span>
-      <span class="day-number">{{ ramadanDay + 1 }}</span>
-      <span class="day-label">رمضان</span>
+    <!-- Header Row -->
+    <div class="daily-header">
+      <!-- Day badge -->
+      <div class="day-badge">
+        <span class="day-label-top">ليلة</span>
+        <span class="day-number">{{ ramadanDay + 1 }}</span>
+        <span class="day-label-bottom">رمضان</span>
+      </div>
+
+      <div class="daily-header-text">
+        <h2 class="daily-section-title">رسالة اليوم</h2>
+        <span class="cat-tag">{{ category }}</span>
+      </div>
     </div>
 
+    <!-- Content Card -->
     <div class="content-card">
-      <div class="card-header">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="title-icon"
-        >
-          <path
-            d="M12 3l1.912 5.886H20.1l-4.994 3.635 1.912 5.886L12 14.772l-5.018 3.635 1.912-5.886-4.994-3.635h6.188z"
-          ></path>
-        </svg>
-        <h3>رسالة اليوم</h3>
-      </div>
+      <!-- Decorative top accent -->
+      <div class="card-accent-line"></div>
 
-      <div class="card-body">
+      <!-- Icon + quote -->
+      <div class="quote-wrapper">
+        <div class="quote-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M3.691 6.292C5.094 4.771 7.217 4 10 4h1v2.819l-.804.161c-1.37.274-2.323.813-2.833 1.604A2.902 2.902 0 0 0 6.925 10H10a1 1 0 0 1 1 1v7c0 1.103-.897 2-2 2H3a1 1 0 0 1-1-1v-5l.003-2.919c-.009-.111-.199-2.741 1.688-4.789zM20 20h-6a1 1 0 0 1-1-1v-5l.003-2.919c-.009-.111-.199-2.741 1.688-4.789C16.094 4.771 18.217 4 21 4h1v2.819l-.804.161c-1.37.274-2.323.813-2.833 1.604A2.902 2.902 0 0 0 17.925 10H21a1 1 0 0 1 1 1v7c0 1.103-.897 2-2 2z"
+            />
+          </svg>
+        </div>
         <p class="daily-text">{{ content }}</p>
-      </div>
-
-      <div class="card-footer">
-        <span class="cat-tag">{{ category }}</span>
       </div>
     </div>
   </div>
@@ -56,7 +59,6 @@ export default defineComponent({
   },
   data() {
     return {
-      // Ramadan 2026 is estimated to start Feb 18 (checking with user instruction Feb 18 = 1 Ramadan)
       ramadanStart: "2026-02-18",
       contentMap: {
         // 1–10: أيام الرحمة
@@ -135,7 +137,7 @@ export default defineComponent({
           category: "دعاء",
         },
         19: {
-          text: "عن أنس بن مالك رضي الله عنه قال: قال النبي صلى الله عليه وسلم: «تسحَّروا فإن في السحور بركة» (رواه البخاري ومسلم).",
+          text: "عن أنس بن مالك رضي الله عنه قال: قال النبي صلى الله عليه وسلم: «تسحَّروا فإن في السحور بركة» (رواه البخاري ومسلم).",
           category: "حديث",
         },
         20: {
@@ -189,25 +191,19 @@ export default defineComponent({
   },
   computed: {
     formattedDate(): string {
-      // Use local date part to avoid UTC shifts
       const d = this.targetDate;
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
     },
     ramadanDay(): number | null {
       const start = new Date(this.ramadanStart + "T00:00:00");
       const current = new Date(this.formattedDate + "T00:00:00");
-
-      // Calculate difference in days
       const diffTime = current.getTime() - start.getTime();
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
-
-      // Assume Ramadan lasts 30 days
       if (diffDays >= 1 && diffDays <= 30) {
         return diffDays;
       }
       return null;
     },
-
     dailyData(): RamadanContent {
       const day = this.ramadanDay;
       if (day && this.contentMap[day]) {
@@ -229,19 +225,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
+/* Container */
 .ramadan-daily-container {
-  margin-top: 20px;
-  animation: slideUp 0.6s ease-out;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  align-items: center;
+  gap: 20px;
+  animation: dailyEnter 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-@keyframes slideUp {
+@keyframes dailyEnter {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(28px);
   }
   to {
     opacity: 1;
@@ -249,100 +244,210 @@ export default defineComponent({
   }
 }
 
+/* Header row */
+.daily-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.daily-header-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* Section title inside daily */
+.daily-section-title {
+  font-size: 1.5rem !important;
+  margin-bottom: 0 !important;
+}
+
+/* Day badge */
 .day-badge {
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--accent-color), #ca8a04);
-  color: #05070a;
-  width: 80px;
-  height: 80px;
+  width: 76px;
+  height: 76px;
   border-radius: 50%;
-  box-shadow: 0 10px 20px rgba(250, 204, 21, 0.3);
-  z-index: 2;
-  border: 4px solid rgba(255, 255, 255, 0.1);
+  background: conic-gradient(
+    from 180deg,
+    var(--accent-color, #f5c842) 0%,
+    var(--accent-deep, #ca8a04) 100%
+  );
+  color: #030509;
+  box-shadow:
+    0 10px 28px rgba(245, 200, 66, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 3px solid rgba(255, 255, 255, 0.12);
+  position: relative;
+}
+
+.day-badge::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px dashed rgba(245, 200, 66, 0.25);
+  animation: badgeSpin 20s linear infinite;
+}
+
+@keyframes badgeSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .day-number {
-  font-size: 1.8rem;
-  font-weight: 800;
+  font-size: 1.85rem;
+  font-weight: 900;
   line-height: 1;
 }
 
-.day-label {
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
+.day-label-top,
+.day-label-bottom {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
 }
 
+/* Category tag */
+.cat-tag {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(245, 200, 66, 0.1);
+  color: var(--accent-color, #f5c842);
+  padding: 4px 14px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid rgba(245, 200, 66, 0.2);
+  letter-spacing: 0.02em;
+}
+
+/* Content card */
 .content-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
-  padding: 30px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  padding: 28px 28px 28px;
   width: 100%;
   position: relative;
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition:
+    transform 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
 .content-card:hover {
-  transform: scale(1.02);
-  border-color: rgba(250, 204, 21, 0.3);
+  transform: translateY(-3px);
+  border-color: rgba(245, 200, 66, 0.18);
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.5);
 }
 
-.card-header {
+/* Decorative top accent line */
+.card-accent-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(245, 200, 66, 0.5),
+    transparent
+  );
+  border-radius: 2px 2px 0 0;
+}
+
+/* Quote area */
+.quote-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.quote-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(245, 200, 66, 0.1);
+  border: 1px solid rgba(245, 200, 66, 0.15);
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-  color: var(--accent-color);
+  justify-content: center;
+  color: var(--accent-color, #f5c842);
+  margin-top: 2px;
 }
 
-.title-icon {
-  width: 20px;
-  height: 20px;
-}
-
-h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
+/* Daily text */
 .daily-text {
-  font-size: 1.2rem;
-  line-height: 1.7;
-  color: #e2e8f0;
+  font-size: 1.1rem;
+  line-height: 2;
+  color: var(--text-primary, #f1f5f9);
   margin: 0;
-  text-align: center;
+  text-align: right;
   font-weight: 400;
 }
 
-.card-footer {
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.cat-tag {
-  background: rgba(250, 204, 21, 0.1);
-  color: var(--accent-color);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  border: 1px solid rgba(250, 204, 21, 0.2);
-}
-
-@media (min-width: 992px) {
-  .ramadan-daily-container {
-    align-items: flex-end;
+/* Desktop */
+@media (min-width: 1024px) {
+  .daily-header {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
   }
+
+  .daily-header-text {
+    align-items: flex-end;
+    text-align: right;
+  }
+
   .daily-text {
     text-align: right;
+    font-size: 1.15rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .content-card {
+    padding: 22px 18px;
+  }
+
+  .quote-wrapper {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .daily-text {
+    font-size: 1rem;
+    line-height: 1.85;
+  }
+
+  .day-badge {
+    width: 68px;
+    height: 68px;
+  }
+
+  .day-number {
+    font-size: 1.6rem;
   }
 }
 </style>

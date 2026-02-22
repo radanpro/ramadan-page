@@ -4,7 +4,7 @@
       class="info-item"
       v-for="(item, index) in displayItems"
       :key="index"
-      :style="{ animationDelay: `${index * 0.1}s` }"
+      :style="{ animationDelay: `${index * 0.12}s` }"
     >
       <span class="label">{{ item.label }}</span>
       <span class="value">{{ item.value }}</span>
@@ -35,34 +35,44 @@ export default defineComponent({
 </script>
 
 <style scoped>
+/* Card */
 .info-card {
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 20px;
-  padding: 24px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 18px;
+  padding: 20px 22px;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    inset 0 0 30px rgba(0, 0, 0, 0.15),
+    0 4px 16px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
+/* Row */
 .info-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-  animation: itemEnter 0.5s ease-out both;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  animation: itemEnter 0.45s ease-out both;
+  gap: 12px;
 }
 
 .info-item:last-child {
-  margin-bottom: 0;
   padding-bottom: 0;
   border-bottom: none;
+}
+
+.info-item:first-child {
+  padding-top: 0;
 }
 
 @keyframes itemEnter {
   from {
     opacity: 0;
-    transform: translateX(10px);
+    transform: translateX(14px);
   }
   to {
     opacity: 1;
@@ -70,21 +80,38 @@ export default defineComponent({
   }
 }
 
+/* Label */
 .label {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
+  color: var(--text-secondary, #94a3b8);
+  font-size: 0.88rem;
   font-weight: 500;
+  white-space: nowrap;
 }
 
+/* Value */
 .value {
   font-weight: 700;
-  color: var(--accent-color);
-  font-size: 1.05rem;
+  color: var(--accent-color, #f5c842);
+  font-size: 0.95rem;
+  text-align: left;
+  background: linear-gradient(
+    135deg,
+    var(--accent-color, #f5c842) 0%,
+    var(--accent-hover, #fde047) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+/* Desktop */
 @media (min-width: 1024px) {
   .info-item {
     flex-direction: row-reverse;
+  }
+
+  .value {
+    text-align: right;
   }
 }
 </style>

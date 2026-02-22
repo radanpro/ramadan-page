@@ -1,6 +1,7 @@
 <template>
   <div class="moon-container">
     <div class="moon-glow"></div>
+    <div class="moon-orbit-ring"></div>
     <div class="moon-wrapper" v-html="svgMoon"></div>
   </div>
 </template>
@@ -50,18 +51,22 @@ export default defineComponent({
       return `
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="moon-svg">
           <defs>
-            <radialGradient id="moonSurface" cx="40%" cy="40%" r="60%">
-              <stop offset="0%" style="stop-color:#F8F8F2;stop-opacity:1"/>
-              <stop offset="60%" style="stop-color:#E2E2D3;stop-opacity:1"/>
-              <stop offset="100%" style="stop-color:#D6D6C8;stop-opacity:1"/>
+            <radialGradient id="moonSurface" cx="38%" cy="35%" r="65%">
+              <stop offset="0%" style="stop-color:#FAFAF5;stop-opacity:1"/>
+              <stop offset="50%" style="stop-color:#E8E8DA;stop-opacity:1"/>
+              <stop offset="100%" style="stop-color:#CCC9B8;stop-opacity:1"/>
             </radialGradient>
-            <filter id="moonInnerShadow">
-              <feComponentTransfer in=SourceAlpha>
+            <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" style="stop-color:rgba(255,255,220,0.05);stop-opacity:1"/>
+              <stop offset="100%" style="stop-color:rgba(0,0,0,0);stop-opacity:1"/>
+            </radialGradient>
+            <filter id="moonInnerShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feComponentTransfer in="SourceAlpha">
                 <feFuncA type="table" tableValues="1 0" />
               </feComponentTransfer>
-              <feGaussianBlur stdDeviation="3"/>
-              <feOffset dx="-2" dy="-2" result="offsetblur"/>
-              <feFlood flood-color="black" flood-opacity="0.4" result="color"/>
+              <feGaussianBlur stdDeviation="4"/>
+              <feOffset dx="-3" dy="-3" result="offsetblur"/>
+              <feFlood flood-color="#000020" flood-opacity="0.5" result="color"/>
               <feComposite in2="offsetblur" operator="in"/>
               <feComposite in2="SourceAlpha" operator="in" />
               <feMerge>
@@ -69,74 +74,109 @@ export default defineComponent({
                 <feMergeNode />
               </feMerge>
             </filter>
+            <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="2" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
             <mask id="moonMask"><circle cx="50" cy="50" r="49" fill="white"/></mask>
           </defs>
-          <circle cx="50" cy="50" r="49" fill="#05070a"/>
+          <!-- Dark background circle -->
+          <circle cx="50" cy="50" r="49" fill="#04060c"/>
+          <!-- Moon surface -->
           <path d="${path}" fill="url(#moonSurface)" filter="url(#moonInnerShadow)"/>
-          
-          <g mask="url(#moonMask)" opacity="0.1" style="transform-origin: 50% 50%; transform: rotate(15deg);">
-             <circle cx="35" cy="35" r="7" fill="#000"/>
-             <circle cx="65" cy="45" r="9" fill="#000"/>
-             <circle cx="45" cy="70" r="5" fill="#000"/>
-             <circle cx="28" cy="62" r="4" fill="#000"/>
-             <circle cx="72" cy="28" r="6" fill="#000"/>
-             <circle cx="50" cy="20" r="3" fill="#000"/>
-             <circle cx="15" cy="45" r="4" fill="#000"/>
-             <circle cx="85" cy="55" r="3" fill="#000"/>
+          <!-- Craters -->
+          <g mask="url(#moonMask)" opacity="0.09" style="transform-origin:50% 50%;transform:rotate(12deg)">
+            <circle cx="34" cy="33" r="7.5" fill="#000"/>
+            <circle cx="64" cy="44" r="10" fill="#000"/>
+            <circle cx="45" cy="68" r="5.5" fill="#000"/>
+            <circle cx="27" cy="61" r="4.5" fill="#000"/>
+            <circle cx="72" cy="27" r="6.5" fill="#000"/>
+            <circle cx="50" cy="19" r="3.5" fill="#000"/>
+            <circle cx="14" cy="45" r="4" fill="#000"/>
+            <circle cx="84" cy="57" r="3.5" fill="#000"/>
+            <circle cx="58" cy="80" r="4" fill="#000"/>
           </g>
         </svg>
       `;
     },
     animateMoon() {
-      // Internal SVG update triggers re-render,
-      // added CSS animation below for continuous rotation
+      // CSS animation handles continuous rotation
     },
   },
 });
 </script>
 
 <style scoped>
+/* Container */
 .moon-container {
-  width: 220px;
-  height: 220px;
-  margin: 0 auto 45px;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
 }
 
+/* Outer ambient glow */
 .moon-glow {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 130%;
+  height: 130%;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(255, 255, 255, 0.1) 0%,
+    rgba(220, 220, 160, 0.1) 0%,
+    rgba(180, 180, 120, 0.04) 40%,
     transparent 70%
   );
-  filter: blur(20px);
-  animation: pulse 4s infinite ease-in-out;
+  filter: blur(16px);
+  animation: moonPulse 5s infinite ease-in-out;
+  pointer-events: none;
 }
 
-@keyframes pulse {
+/* Subtle orbit ring */
+.moon-orbit-ring {
+  position: absolute;
+  width: 115%;
+  height: 115%;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 220, 0.06);
+  pointer-events: none;
+  animation: orbitSpin 60s linear infinite;
+}
+
+@keyframes orbitSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes moonPulse {
   0%,
   100% {
-    opacity: 0.5;
+    opacity: 0.55;
     transform: scale(1);
   }
   50% {
-    opacity: 0.8;
+    opacity: 0.9;
     transform: scale(1.1);
   }
 }
 
+/* Moon wrapper */
 .moon-wrapper {
   width: 100%;
   height: 100%;
   z-index: 1;
-  animation: rotateMoon 120s linear infinite;
+  animation: rotateMoon 180s linear infinite;
+  filter: drop-shadow(0 0 20px rgba(220, 215, 170, 0.12));
 }
 
 @keyframes rotateMoon {
@@ -148,18 +188,27 @@ export default defineComponent({
   }
 }
 
+/* SVG */
 .moon-svg {
   width: 100%;
   height: 100%;
   display: block;
-  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1));
 }
 
+/* Desktop */
 @media (min-width: 1024px) {
   .moon-container {
-    width: 280px;
-    height: 280px;
-    margin: 0 auto 60px;
+    width: 260px;
+    height: 260px;
+    margin: 0 auto 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .moon-container {
+    width: 175px;
+    height: 175px;
+    margin-bottom: 28px;
   }
 }
 </style>
